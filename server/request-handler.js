@@ -26,14 +26,33 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   var routeOkay = request.url.substring(0, 17) === '/classes/messages';
+
+  console.log('REQUEST URL ', request.url.substring(0, 17));
+
+  console.log('REQUEST METHOD ', request.method);
   var headers = defaultCorsHeaders;
   
   headers['Content-Type'] = 'application/json';
 
-  
-  if (request.method === 'GET' && routeOkay) {
+  if (request.method === 'OPTIONS' && routeOkay) {
+
+    response.writeHead(200, headers);
+    response.end();
+
+  } else if (request.method === 'GET' && routeOkay) {
 
     var messages = db.messages.find();
+
+    messages.sort((a, b) => {
+      if (a.createdAt < b.createdAt) {
+        return 1;
+      }
+      if (a.createdAt > b.createdAt) {
+        return -1;
+      }
+      return 0;
+    });
+
     response.writeHead(200, headers);
     response.end(`{"results":${JSON.stringify(messages)}}`);
 
@@ -49,7 +68,11 @@ var requestHandler = function(request, response) {
     request.on('end', function() {
 
       body = Buffer.concat(body).toString();
-      db.messages.save(JSON.parse(body));
+      
+      body = JSON.parse(body);
+      body.createdAt = new Date();
+      
+      db.messages.save(body);
 
       response.writeHead(201, headers);
       response.end('{"message": "success"}');
