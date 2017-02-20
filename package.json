@@ -29,5 +29,9 @@
     "presets": [
       "es2015"
     ]
+  },
+  "dependencies": {
+    "body": "^5.1.0",
+    "diskdb": "^0.1.17"
   }
 }
