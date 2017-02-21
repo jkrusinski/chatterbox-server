@@ -24,6 +24,7 @@ app.use(function (req, res, next) {
   }
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/classes/messages', function (req, res) {
@@ -47,6 +48,8 @@ app.get('/classes/messages', function (req, res) {
 app.post('/classes/messages', function (req, res) {
 
   var message = req.body;
+
+  console.log('The message is : ', message);
 
   message.createdAt = new Date();
 

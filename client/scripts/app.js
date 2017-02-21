@@ -12,7 +12,7 @@ var app = {
 
   init: function() {
     // Get username
-    app.username = window.location.search.substr(10);
+    app.username = decodeURI(window.location.search.substr(10));
 
     // Cache jQuery selectors
     app.$message = $('#message');
@@ -42,6 +42,7 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
+      contentType: 'application/JSON',
       data: JSON.stringify(message),
       success: function (data) {
         // Clear messages input
