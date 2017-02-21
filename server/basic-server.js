@@ -1,8 +1,11 @@
 var express = require('express');
 var app = express();
 
-var db = require('diskdb');
-db = db.connect(__dirname + '/db', ['messages']);
+var path = require('path');
+
+var appServer = require('./app-server');
+var apiServer = require('./api-server');
+
 
 var bodyParser = require('body-parser');
 
@@ -27,37 +30,11 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/classes/messages', function (req, res) {
+app.use(express.static(path.join(__dirname, '/../client')));
 
-  var messages = {};
-  messages.results = db.messages.find();
+app.use(appServer);
 
-  messages.results.sort((a, b) => {
-    if (a.createdAt < b.createdAt) {
-      return 1;
-    }
-    if (a.createdAt > b.createdAt) {
-      return -1;
-    }
-    return 0;
-  });
-
-  res.json(messages);
-});
-
-app.post('/classes/messages', function (req, res) {
-
-  var message = req.body;
-
-  console.log('The message is : ', message);
-
-  message.createdAt = new Date();
-
-  db.messages.save(message);
-
-  res.status(201).end();
-  
-});
+app.use('/classes/messages', apiServer);
 
 app.use(function (req, res, next) {
   res.status(404).send('Sorry can\'t find that!');
