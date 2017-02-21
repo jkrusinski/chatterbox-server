@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>create a chatterbox account</title>
+    <link rel="stylesheet" href="public/styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="public/bower_components/jquery/dist/jquery.js"></script>
+
+  </head>
+  <body>
+
+    <form action="/signup" method="POST" id="login">
+
+      <label for="signup-user">Choose a username: </label>
+      <input id="signup-user" type="text" name="username"/>
+
+      <label for="signup-password">Create a password: </label>
+      <input id="signup-password" type="password" name="password"/>
+
+      <label for="signup-password-check">Repeat your password: </label>
+      <input id="signup-password-check" type="password" name="password-check"/>
+
+      <input type="submit" name="submit" value="Submit"/>
+    </form>
+
+    <a href='/'>Back to login</a>
+
+  </body>
+</html>

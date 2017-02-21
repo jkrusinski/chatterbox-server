@@ -12,7 +12,7 @@ var app = {
 
   init: function() {
     // Get username
-    app.username = decodeURI(window.location.search.substr(10));
+    app.username = Cookies.get('username');
 
     // Cache jQuery selectors
     app.$message = $('#message');
